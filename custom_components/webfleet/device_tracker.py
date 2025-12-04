@@ -9,7 +9,7 @@ import voluptuous as vol
 
 from homeassistant.components.device_tracker import (
     PLATFORM_SCHEMA,
-    SOURCE_TYPE_GPS,
+    SourceType,
 )
 from homeassistant.components.device_tracker.config_entry import TrackerEntity
 from homeassistant.core import callback
@@ -204,8 +204,8 @@ class WebfleetEntity(CoordinatorEntity, TrackerEntity):
         return None
 
     @property
-    def source_type(self):
-        return SOURCE_TYPE_GPS
+    def source_type(self) -> SourceType:
+        return SourceType.GPS
 
     @property
     def icon(self) -> Optional[str]:
