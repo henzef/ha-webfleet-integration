@@ -14,6 +14,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from homeassistant.helpers.update_coordinator import (
@@ -214,6 +215,13 @@ class WebfleetEntity(CoordinatorEntity, TrackerEntity):
     @property
     def device_id(self) -> str:
         return self.vehicle_data["objectuid"]
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        return DeviceInfo(
+            identifiers={(WF_DOMAIN, self.device_id)},
+            name=self.name,
+        )
 
     @property
     def latitude(self) -> float | None:
