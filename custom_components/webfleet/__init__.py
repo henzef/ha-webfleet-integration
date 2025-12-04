@@ -2,15 +2,9 @@
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-
-
-from wfconnect.wfconnect import WfConnect
-
-from .const import DOMAIN
-
 from homeassistant.const import (
+    Platform,
     CONF_PASSWORD,
     CONF_USERNAME,
     CONF_URL,
@@ -18,6 +12,11 @@ from homeassistant.const import (
     CONF_AT,
     CONF_DEVICES,
 )
+
+from wfconnect.wfconnect import WfConnect
+
+from .const import DOMAIN
+
 
 PLATFORMS: list[Platform] = [Platform.DEVICE_TRACKER]
 

@@ -1,11 +1,11 @@
-from asyncio import exceptions
 import logging
-from typing import Any
+from typing import Any, ClassVar, Optional
+
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigFlowResult
 from homeassistant.exceptions import HomeAssistantError
 
-from . import DOMAIN as WF_DOMAIN
+from .const import DOMAIN as WF_DOMAIN
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
@@ -26,7 +26,7 @@ _LOGGER = logging.getLogger(__name__)
 class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
 
     VERSION = 1
-    CONFIG_SCHEMA = vol.Schema(
+    CONFIG_SCHEMA: ClassVar[vol.Schema] = vol.Schema(
         {
             vol.Optional(
                 CONF_URL,
@@ -44,7 +44,15 @@ class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
         }
     )
 
-    def __init__(self):
+    username: Optional[str]
+    password: Optional[str]
+    account: Optional[str]
+    url: Optional[str]
+    api_key: Optional[str]
+    object_name: Optional[str]
+    config_schema: vol.Schema
+
+    def __init__(self) -> None:
         """Initialize the config flow."""
         self.username = None
         self.password = None
@@ -54,7 +62,7 @@ class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
         self.object_name = None
         self.config_schema = self.CONFIG_SCHEMA
 
-    async def connect(self):
+    async def connect(self) -> bool:
         try:
             test_api = WfConnect(self.url)
             test_api.setAuthentication(
@@ -69,10 +77,10 @@ class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
             raise InvalidAccount
         return False
 
-    def validate_user_input(self, user_input=None):
+    def validate_user_input(self, user_input: dict[str, Any] | None = None) -> bool:
         return True
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Handle the user configuration step."""
         errors = {}
         if user_input is not None:
