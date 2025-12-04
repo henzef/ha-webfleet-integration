@@ -184,6 +184,8 @@ class WebfleetEntity(CoordinatorEntity, TrackerEntity):
         )
         self.entity_id = entity_id
 
+        self._attr_unique_id = self.vehicle_data['objectuid']
+
     @callback
     def _handle_coordinator_update(self) -> None:
         self.async_write_ha_state()
