@@ -41,6 +41,7 @@ class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
             vol.Optional(
                 CONF_DEVICES,
             ): cv.string,
+            vol.Optional("camera_id", default="88898"): cv.string,
         }
     )
 
