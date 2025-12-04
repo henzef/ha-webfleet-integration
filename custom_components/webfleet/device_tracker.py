@@ -248,7 +248,7 @@ class WebfleetEntity(CoordinatorEntity, TrackerEntity):
         vehicle_data["longitude"] = self.longitude
 
         # Not supported anymore. This was only specific to LINK classic.
-        del vehicle_data["quality"]
-        del vehicle_data["satellite"]
+        vehicle_data.pop("quality", None)
+        vehicle_data.pop("satellite", None)
 
         return vehicle_data
